@@ -8,8 +8,8 @@
 ^WindComponent VWind=(\S+) dirWind=(\S+)
 ```
 
-Déclinaison magnétique et angle du vent en degrés.
-Vitesse du vent en m/s.
+* Déclinaison magnétique et angle du vent en degrés.
+* Vitesse du vent en m/s.
 
 ### Limites facteurs de charge
 ```
@@ -42,5 +42,5 @@ Unités : degrés et °/s
 ```
 ^ManagedAlt alt=(\S+) Q=(\S+)
 ```
-alt : altitude pression (en ft)
-Q : réference de pression (en hPa)
+* alt : altitude pression (en ft)
+* Q : réference de pression (en hPa)
