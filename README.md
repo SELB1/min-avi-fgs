@@ -31,9 +31,10 @@ Unités m/s².
 ```
 Unités : m/s
 
-### Angle et vitesse d'angle de roulis
+### Angle et vitesse d'angle de roulis manuel et AP
 ```
 ^RollLimits phimax=(\S+) pmax=(\S+)
+^RollLimitsAP phimax_AP=(\S+) pmax_AP=(\S+)
 ```
 Unités : degrés et °/s
 
