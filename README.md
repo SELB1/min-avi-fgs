@@ -1,5 +1,12 @@
 # min-avi-fgs
 
+## Installation
+
+Installation des dépendances (python-ivy, colorama)
+```
+pip install -r requirements.txt
+```
+
 ## Messages IVY
 
 ### Vent et déclinaison magnétique
