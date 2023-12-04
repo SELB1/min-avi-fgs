@@ -3,10 +3,10 @@ Donnne Vi, et l'enveloppe [Vmin, Vmax]
 """
 from ivy.std_api import *
 
-def speed_limits(agent, vmin, vmax):
+def speed_limits(vmin, vmax):
     print(f"Speed limits received: Vmin = {vmin}, Vmax = {vmax}")
 
-def managed_speed(agent, vi):
+def managed_speed(vi):
     print(f"Managed speed received: Vi = {vi}")
 
 def setup_ivy():
