@@ -6,6 +6,7 @@ Méthode de sélection d'axe :
     - Si ce point est très proche d'un autre, on sélectionne l'axe suivant 
 """
 from math import sqrt, atan, pi, tan
+from ivy.std_api import *
 
 __FGS_TARGETED_WPT = None
 
@@ -55,7 +56,7 @@ def get_axis(StateVector:object, fp_path="../../data/flightplan.csv"):
     # Distance au WPT pour entamer le virage
     delta_chi = None
     t_wpt = __FGS_TARGETED_WPT
-    
+
     if __FGS_TARGETED_WPT > 1:
         current_axis = Axis(fp[t_wpt-1], fp[t_wpt])
         last_axis = Axis(fp[t_wpt-2], fp[t_wtp-1])
