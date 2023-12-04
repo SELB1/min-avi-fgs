@@ -18,8 +18,8 @@ def setup_ivy():
         nh,
         nh
     )
-    IvyBindMsg(speed_limits, '^SpeedLimits vmin=(\S+) vmax=(\S+)') (*à modifier*)
-    IvyBindMsg(managed_speed, '^ManagedSpeed vi=(\S+)') (*à modifier*)
+    IvyBindMsg(speed_limits, '^SpeedLimits vmin=(\S+) vmax=(\S+)') #(*à modifier*)
+    IvyBindMsg(managed_speed, '^ManagedSpeed vi=(\S+)') #(*à modifier*)
     
     IvyStart("10.1.127.255:2012")
 
