@@ -16,7 +16,15 @@ def callback(agent, *data):
 
 
 
-def send_bank_angle(state_vector):
+def send_bank_angle(state_vector):class StateVector:
+    def __init__(self, x:float, y:float, z:float, Vp:float, fpa:float, psi:float, phi:float):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.Vp = Vp
+        self.fpa = fpa
+        self.psi = psi
+        self.phi = phi
     # Règles spécifiées pour l'angle de braquage en fonction de la vitesse de manoeuvre
     maneuvering_speed = state_vector.Vp
     if maneuvering_speed <= maneuvering_speed -10:
