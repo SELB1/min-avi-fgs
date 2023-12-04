@@ -40,7 +40,7 @@ Unités : degrés et °/s
 
 ### Axe à capturer
 ```
-^Axis x=(\S+) z=(\S+) chi=(\S+)
+^Axis x=(\S+) y=(\S+) chi=(\S+)
 ```
 
 * (x,z) : origine de l'axe (m)
