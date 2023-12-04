@@ -16,7 +16,6 @@ def callback(agent, *data):
 
 
 
-
 def send_bank_angle(state_vector):
     # Règles spécifiées pour l'angle de braquage en fonction de la vitesse de manoeuvre
     vp = state_vector.Vp
