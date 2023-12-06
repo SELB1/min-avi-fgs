@@ -12,18 +12,25 @@ class StateVector:
         self.fpa = fpa
         self.psi = psi
         self.phi = phi
+        
+def callback(agent, *data):
+    print(f"Ivy message received: {data}")
+clear
 
-def nx_control(nx):
-    print(f"NxControl received: nx = {nx}")
-
-def nx_AP_control(nxAP):
-    print(f"NxAPControl received: nxAP = {nxAP}")
-
-def nz_control(nz):
-    print(f"NzControl received: nz = {nz}")
-
-def nz_AP_control(nzAP):
-    print(f"NzAPControl received: nzAP = {nzAP}")
+def loadfactors():
+    nx_max=2.5
+    nx_min=-1
+    nz_max=2.5
+    nz_min=-1
+    nx_AP=2.5
+    nz_AP=2.5
+    IvySendMsg(f"NxControl nx_max={nx_max}")
+    IvySendMsg(f"NxControl nx_min={nx_min}")
+    IvySendMsg(f"NxControl nz_max={nz_max}")
+    IvySendMsg(f"NxControl nz_min={nz_min}")
+    IvySendMsg(f"NxAPControl nxAP={nx_AP}")
+    IvySendMsg(f"NzAPControl nzAP={nz_AP}")
+          
 
 def setup_ivy():
     nh = lambda _x, _y: 1
@@ -35,12 +42,7 @@ def setup_ivy():
         nh
     )
 
-    IvyBindMsg(nx_control, '^APNxControl nx=(\S+)')
-    IvyBindMsg(nz_control, '^APNzControl nz=(\S+)')
-    IvyBindMsg(nx_AP_control, '^APNzControl nx=(\S+)')
-    IvyBindMsg(nz_AP_control, '^APNzControl nz=(\S+)')
-    
     IvyStart("10.1.127.255:2012")
-
+    
     IvyStop()
     
