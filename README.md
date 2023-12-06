@@ -7,7 +7,10 @@ Installation des dépendances (python-ivy, colorama)
 pip install -r requirements.txt
 ```
 
-## Messages IVY
+## Intégration
+
+
+## Messages IVY envoyés
 
 ### Vent et déclinaison magnétique
 ```
@@ -20,8 +23,13 @@ pip install -r requirements.txt
 
 ### Limites facteurs de charge
 ```
-^LimitsN nx=(\S+) nz=(\S+) nx_AP=(\S+) nz_AP=(\S+)
+^LimitsN nx_neg=(\S+) nx_pos=(\S+) nz_neg=(\S+) nz_pos=(\S+)
+^LimitsNAP nx_neg_AP=(\S+) nx_pos_AP=(\S+) nz_neg_AP=(\S+) nz_pos_AP=(\S+)
 ```
+nz_pos : limite supérieure de nz
+
+nz_neg : limite inférieure de nz
+
 Unités m/s².
 
 ### Vitesse managée et limites de vitesse
@@ -52,3 +60,10 @@ Unités : degrés et °/s
 ```
 * alt : altitude pression (en ft)
 * Q : réference de pression (en hPa)
+
+## Messages IVY écoutés
+### DIRTO
+```
+^DIRTO x=(\S+) y=(\S+)
+```
+x, y en m
