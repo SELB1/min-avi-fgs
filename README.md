@@ -7,6 +7,9 @@ Installation des dépendances (python-ivy, colorama)
 pip install -r requirements.txt
 ```
 
+## Intégration
+
+
 ## Messages IVY envoyés
 
 ### Vent et déclinaison magnétique
@@ -20,8 +23,8 @@ pip install -r requirements.txt
 
 ### Limites facteurs de charge
 ```
-^LimitsN nx=(\S+) nz_pos=(\S+) nz_neg=(\S+) 
-^LimitsNAP nx_AP=(\S+) nz_pos_AP=(\S+) nz_neg_AP=(\S+)
+^LimitsN nx_neg=(\S+) nx_pos=(\S+) nz_pos=(\S+) nz_neg=(\S+) 
+^LimitsNAP nx_neg_AP=(\S+) nx_pos_AP=(\S+) nz_pos_AP=(\S+) nz_neg_AP=(\S+)
 ```
 nz_pos : limite supérieure de nz
 
