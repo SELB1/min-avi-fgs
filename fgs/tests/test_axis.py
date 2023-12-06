@@ -65,7 +65,7 @@ if __name__ == "__main__":
     axes = [Axis(flightplan[i], flightplan[i+1]) for i in range(len(flightplan)-1)]
 
     # Position actuelle de l'avion (à remplacer par les données de votre simulation)
-    current_position = Point(2.0, 2.0)
+    current_position = Point(-3552, -9204)
 
     # Vérifier l'alignement et afficher le tracé
     closest_axis = get_closest_axis(current_position, axes)
