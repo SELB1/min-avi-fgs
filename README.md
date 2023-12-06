@@ -20,8 +20,13 @@ pip install -r requirements.txt
 
 ### Limites facteurs de charge
 ```
-^LimitsN nx=(\S+) nz=(\S+) nx_AP=(\S+) nz_AP=(\S+)
+^LimitsN nx=(\S+) nz_pos=(\S+) nz_neg=(\S+) 
+^LimitsNAP nx_AP=(\S+) nz_pos_AP=(\S+) nz_neg_AP=(\S+)
 ```
+nz_pos : limite supérieure de nz
+
+nz_neg : limite inférieure de nz
+
 Unités m/s².
 
 ### Vitesse managée et limites de vitesse
