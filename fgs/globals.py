@@ -1,0 +1,7 @@
+# Global variables
+__FGS_STATE_VECTOR = None
+__FGS_TARGETED_LAT_WPT = None
+
+# Constants
+__FGS_FLYBY_RADIUS = 1852
+__FGS_FLYOVER_RADIUS = 185

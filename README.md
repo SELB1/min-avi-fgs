@@ -9,6 +9,13 @@ pip install -r requirements.txt
 
 ## Intégration
 
+### Intégration dans un autre programme
+* Installer le module ```fgs``` (placer le dossier ```fgs``` dans le répertoire contenant le main.py)
+* Importer la fonction ```bind_messages``` comme suit : ```from fgs.main import bind_messages``` depuis le main
+* ```bind_messages``` contient tous les appels de ```IvyBindMsg(...)```
+
+### Intégration sur le bus Ivy
+* Lancer le ```main.py``` se trouvant à la racine du dépot
 
 ## Messages IVY envoyés
 
