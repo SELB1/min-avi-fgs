@@ -20,25 +20,28 @@ def get_flightplan(path="../../data/flightplan.csv"):
             res.append(Point(float(t[1]), float(t[2]), t[0]))
     return res
 
-def check_target(state_vector:StateVector, fp_path="../../data/flightplan.csv"):
+def check_target(fp_path="../../data/flightplan.csv"):
+    """
+    Le state vector doit avoir été reçu avant de pouvoir lancer cette fonction
+    """
     fp = get_flightplan(fp_path)
-    current_pos = Point(state_vector.x, state_vector.y)
+    current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     if pf[fg.TARGETED_LAT_WPT] - current_pos <= fg.FLYBY_RADIUS:
         fg.TARGETED_LAT_WPT += 1
 
-def get_axis(state_vector:StateVector, fp_path="../../data/flightplan.csv"):
+def get_axis(fp_path="../../data/flightplan.csv"):
     """
+    Le state vector doit avoir été reçu avant de pouvoir donner un axe
     flyby_radius : distance à laquelle l'avion capture l'axe suivant
     """
     if fg.TARGETED_LAT_WPT is None:
         fg.TARGETED_LAT_WPT = 1
     
-    SV = state_vector
     fp = get_flightplan(fp_path)
     
     # Rayon de virage
     phimax = 15 #degrés
-    R = SV.Vp**2/(g*tan(phimax*pi/180))
+    R = fg.STATE_VECTOR.Vp**2/(g*tan(phimax*pi/180))
 
     # Distance au WPT pour entamer le virage
     delta_chi = None
@@ -51,7 +54,7 @@ def get_axis(state_vector:StateVector, fp_path="../../data/flightplan.csv"):
 
         d = R * tan(delta_chi/2) * 1.5
 
-        current_pos = Point(SV.x, SV.y)
+        current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
         # si la distance entre l'avion et le point visé est plus petite que la distance de virage
         if (current_pos - fp[fg.TARGETED_LAT_WPT]) <= d:
             if fg.TARGETED_LAT_WPT + 1 < len(fp): # on ne déborde pas le plan de vol

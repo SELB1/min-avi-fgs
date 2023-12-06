@@ -1,27 +1,7 @@
 from math import sqrt, atan2, degrees, pi, tan
 from ivy.std_api import *
 
-__FGS_TARGETED_WPT = None
-
-class Point:
-    def __init__(self, x, y, name=""):
-        self.x = x
-        self.y = y
-        self.name = name
-    
-    def __sub__(self, other):
-        """
-        Distance entre deux points
-        """
-        return sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
-
-
-class Axis:
-    def __init__(self, first: Point, second: Point):
-        # x => Nord (vrai)
-        # y => Est
-        self.chi = atan2(second.x - first.x, second.y - first.y) * 180/pi
-        self.p0 = first
+from fgs.defs import Point, Axis
 
 def get_flightplan(path="../../data/flightplan.csv"):
     res = []

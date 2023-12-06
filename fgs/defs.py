@@ -1,3 +1,8 @@
+"""
+Helper classes and constants
+"""
+
+### HELPER CLASSES ###
 class StateVector:
     def __init__(self, x:float, y:float, z:float, Vp:float, fpa:float, psi:float, phi:float):
         self.x = x
@@ -33,3 +38,9 @@ class Axis:
         # y => Est
         self.chi = atan((second.x - first.x)/(second.y - first.y)) * 180/pi
         self.p0 = first
+
+
+### CONSTANTS ###
+FLYBY_RADIUS = 1852
+FLYOVER_RADIUS = 185
+MAGNETIC_DEVIATION = 13.59

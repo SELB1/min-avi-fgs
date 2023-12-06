@@ -1,15 +1,9 @@
 import time
 from ivy.std_api import *
+
+from fgs.defs import StateVector
+
 maneuvering_speed = 128 #internet
-class StateVector:
-    def __init__(self, x:float, y:float, z:float, Vp:float, fpa:float, psi:float, phi:float):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.Vp = Vp
-        self.fpa = fpa
-        self.psi = psi
-        self.phi = phi
 
 def callback(agent, *data):
     print(f"Ivy message received: {data}")
