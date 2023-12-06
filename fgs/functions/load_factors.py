@@ -41,4 +41,6 @@ def setup_ivy():
     IvyBindMsg(nz_AP_control, '^APNzControl nz=(\S+)')
     
     IvyStart("10.1.127.255:2012")
+
+    IvyStop()
     
