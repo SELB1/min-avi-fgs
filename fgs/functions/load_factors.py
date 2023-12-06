@@ -41,15 +41,4 @@ def setup_ivy():
     IvyBindMsg(nz_AP_control, '^APNzControl nz=(\S+)')
     
     IvyStart("10.1.127.255:2012")
-
-def send_nx_control(nx):
-    IvySendMsg(f"NxControl nx={nx}")
-
-def send_nz_control(nz):
-    IvySendMsg(f"NzControl nz={nz}")
-
-def send_nx_AP_control(nz):
-    IvySendMsg(f"NxAPControl nxAP={nxAP}")
-
-def send_nz_AP_control(nz):
-    IvySendMsg(f"NzAPControl nzAP={nzAP}")
+    
