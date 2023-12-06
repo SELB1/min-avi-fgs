@@ -8,27 +8,9 @@ Méthode de sélection d'axe :
 from math import sqrt, atan, pi, tan
 from ivy.std_api import *
 
-__FGS_TARGETED_WPT = None
+import fgs.globals as fg
 
-class Point:
-    def __init__(self, x, y, name=""):
-        self.x = x
-        self.y = y
-        self.name = name
-    
-    def __sub__(self, other):
-        """
-        Distance entre deux points
-        """
-        return sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
-
-
-class Axis:
-    def __init__(self, first:Point, second:Point):
-        # x => Nord (vrai)
-        # y => Est
-        self.chi = atan((second.x - first.x)/(second.y - first.y)) * 180/pi
-        self.p0 = first
+from fgs.defs import Point, Axis, StateVector
 
 def get_flightplan(path="../../data/flightplan.csv"):
     res = []
@@ -38,15 +20,20 @@ def get_flightplan(path="../../data/flightplan.csv"):
             res.append(Point(float(t[1]), float(t[2]), t[0]))
     return res
 
-def get_axis(StateVector:object, fp_path="../../data/flightplan.csv"):
+def check_target(state_vector:StateVector, fp_path="../../data/flightplan.csv"):
+    fp = get_flightplan(fp_path)
+    current_pos = Point(state_vector.x, state_vector.y)
+    if pf[fg.TARGETED_LAT_WPT] - current_pos <= fg.FLYBY_RADIUS:
+        fg.TARGETED_LAT_WPT += 1
+
+def get_axis(state_vector:StateVector, fp_path="../../data/flightplan.csv"):
     """
     flyby_radius : distance à laquelle l'avion capture l'axe suivant
     """
-    global __FGS_TARGETED_WPT
-    if __FGS_TARGETED_WPT is None:
-        __FGS_TARGETED_WPT = 0
+    if fg.TARGETED_LAT_WPT is None:
+        fg.TARGETED_LAT_WPT = 1
     
-    SV = StateVector
+    SV = state_vector
     fp = get_flightplan(fp_path)
     
     # Rayon de virage
@@ -55,18 +42,28 @@ def get_axis(StateVector:object, fp_path="../../data/flightplan.csv"):
 
     # Distance au WPT pour entamer le virage
     delta_chi = None
-    t_wpt = __FGS_TARGETED_WPT
+    t_wpt = fg.TARGETED_LAT_WPT
 
-    if __FGS_TARGETED_WPT > 1:
+    if fg.TARGETED_LAT_WPT > 1:
         current_axis = Axis(fp[t_wpt-1], fp[t_wpt])
         last_axis = Axis(fp[t_wpt-2], fp[t_wtp-1])
         delta_chi = current_axis.chi - last_axis.chi
+
+        d = R * tan(delta_chi/2) * 1.5
+
+        current_pos = Point(SV.x, SV.y)
+        # si la distance entre l'avion et le point visé est plus petite que la distance de virage
+        if (current_pos - fp[fg.TARGETED_LAT_WPT]) <= d:
+            if fg.TARGETED_LAT_WPT + 1 < len(fp): # on ne déborde pas le plan de vol
+                fg.TARGETED_LAT_WPT += 1
+                # envoyer l'axe suivant
+                a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
+                IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.chi}")
+                return
     else:
-
-
-    d = R * tan()
-
-    IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.chi}")
+        a = Axis(fp[0], fp[1])
+        IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.chi}")
+        return
 
 if __name__ == "__main__":
     p1 = Point(.0, .0)
