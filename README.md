@@ -7,7 +7,7 @@ Installation des dépendances (python-ivy, colorama)
 pip install -r requirements.txt
 ```
 
-## Messages IVY
+## Messages IVY envoyés
 
 ### Vent et déclinaison magnétique
 ```
@@ -57,3 +57,10 @@ Unités : degrés et °/s
 ```
 * alt : altitude pression (en ft)
 * Q : réference de pression (en hPa)
+
+## Messages IVY écoutés
+### DIRTO
+```
+^DIRTO x=(\S+) y=(\S+)
+```
+x, y en m
