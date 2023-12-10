@@ -9,7 +9,5 @@ def main():
     init_fgs()
     IvyMainLoop()
 
-
-
 if __name__ == "__main__":
     main()

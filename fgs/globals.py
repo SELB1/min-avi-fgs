@@ -12,4 +12,7 @@ Variables globales du module, partagées par les fonctions et mises à jour par 
 # >>> from fgs.globals import STATE_VECTOR
 
 STATE_VECTOR = None
-TARGETED_LAT_WPT = None
+TARGETED_LAT_WPT = 1
+LOG = True
+# 2nm
+FLYBY_RADIUS = 2*1852
