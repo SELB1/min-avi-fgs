@@ -14,5 +14,3 @@ Variables globales du module, partagées par les fonctions et mises à jour par 
 STATE_VECTOR = None
 TARGETED_LAT_WPT = 1
 LOG = True
-# 2nm
-FLYBY_RADIUS = 2*1852

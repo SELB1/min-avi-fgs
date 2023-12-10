@@ -45,7 +45,25 @@ class Axis:
     def __format__(self, _):
         return self.__str__()
 
+### HEPLER FUNTIONS ###
+def get_flightplan(path="./../../data/flightplan.csv"):
+    res = []
+    with open(path, "r") as f:
+        for line in f:
+            t = line.rstrip().split(',')
+            flyby = False
+            flyover = False
+            match t[4]:
+                case 'flyby':
+                    flyby = True
+                case 'flyover':
+                    flyover = True
+            res.append(Point(float(t[1]), float(t[2]), flyover, flyby, t[0]))
+    return res
+
 ### CONSTANTS ###
 FLYBY_RADIUS = 1852
 FLYOVER_RADIUS = 185
 MAGNETIC_DEVIATION = 13.59
+FLPN_JOIN_RADIUS = 2*1852 # 2 NM
+FLYOVER_RADIUS = 0.4*1852 # 0.4 NM

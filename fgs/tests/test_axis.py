@@ -3,18 +3,10 @@ import numpy as np
 from math import atan2, degrees, radians, cos, sin, pi
 from colorama import Fore
 
-from fgs.defs import Axis, Point
+from fgs.defs import Axis, Point, get_flightplan
 
 from ivy.std_api import *
 from time import sleep
-
-def get_flightplan(path="./../../data/flightplan.csv"):
-    res = []
-    with open(path, "r") as f:
-        for line in f:
-            t = line.rstrip().split(',')
-            res.append(Point(float(t[1]), float(t[2]), t[0]))
-    return res
 
 def plot_flight(flightplan):
     # Tracé du plan de vol et des axes
@@ -33,9 +25,9 @@ def plot_flight(flightplan):
     fp = flightplan
     for i in range(0, len(fp)):
         if i+1 < len(fp):
-            plt.plot((fp[i].x, fp[i+1].x), (fp[i].y, fp[i+1].y), 'ro-')
+            plt.plot((fp[i].x, fp[i+1].x), (fp[i].y, fp[i+1].y), marker="", color="red")
         else:
-            plt.plot((fp[i].x, fp[0].x), (fp[i].y, fp[0].y), 'ro-')
+            plt.plot((fp[i].x, fp[0].x), (fp[i].y, fp[0].y), marker="", color="red")
 
     plt.xlabel('Position X')
     plt.ylabel('Position Y')
@@ -91,10 +83,16 @@ def run():
     p0 = Point(-3000, -2000)
     run_ivy(p0)
 
-    # Cas 3 : Envoi de l'axe suivant pour en anticipation
-    print(f"{Fore.GREEN}Cas 2 :{Fore.RESET} Envoi de l'axe suivant pour en anticipation")
+    # Cas 3 : Envoi de l'axe suivant en anticipation (fly-by)
+    print(f"{Fore.GREEN}Cas 3 :{Fore.RESET} Envoi de l'axe suivant pour en anticipation")
     input("[enter] pour continuer : ")
     p0 = Point(-3000, -1500)
+    run_ivy(p0)
+
+    # Cas 4 : Envoi de l'axe suivant pour un fly-over
+    print(f"{Fore.GREEN}Cas 4 :{Fore.RESET} Envoi de l'axe suivant pour un fly-over")
+    input("[enter] pour continuer : ")
+    p0 = Point(1824, 10000)
     run_ivy(p0)
 
     IvyStop()

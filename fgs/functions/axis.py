@@ -10,6 +10,7 @@ from ivy.std_api import *
 from colorama import Fore
 
 import fgs.globals as fg
+import fgs.defs as fd
 
 from fgs.defs import Point, Axis, StateVector
 
@@ -21,23 +22,16 @@ def get_flightplan(path="../../data/flightplan.csv"):
             res.append(Point(float(t[1]), float(t[2]), t[0]))
     return res
 
-"""
-def check_target(fp_path="../../data/flightplan.csv"):
-    fp = get_flightplan(fp_path)
-    current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
-    if fp[fg.TARGETED_LAT_WPT] - current_pos <= fg.FLYBY_RADIUS:
-        if fg.LOG:
-            print(f"[*]{Fore.LIGHTBLACK_EX} TARGETED_LAT_WPT={fg.TARGETED_LAT_WPT}{Fore.RESET}")
-        fg.TARGETED_LAT_WPT += 1
-"""
-
-def check_target(fp_path="../../data/flightplan.csv"):
+def join_FLPN(fp_path="../../data/flightplan.csv"):
+    """
+    Rejoint le plan de vol si l'avion est à au plus FLPN_JOIN_RADIUS d'un point
+    """
     fp = get_flightplan(fp_path)
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     for i in range(fg.TARGETED_LAT_WPT, len(fp)):
-        if fp[i] - current_pos <= fg.FLYBY_RADIUS:
+        if fp[i] - current_pos <= fd.FLPN_JOIN_RADIUS:
             if fg.LOG:
-                print(f"[*]{Fore.LIGHTBLACK_EX} TARGETED_LAT_WPT={fg.TARGETED_LAT_WPT}{Fore.RESET}")
+                print(f"[*] FLPN joined{Fore.LIGHTBLACK_EX} TARGETED_LAT_WPT={fg.TARGETED_LAT_WPT}{Fore.RESET}")
             fg.TARGETED_LAT_WPT = i
 
 def get_axis(fp_path="../../data/flightplan.csv"):
@@ -65,16 +59,21 @@ def get_axis(fp_path="../../data/flightplan.csv"):
             print("[*] " + Fore.LIGHTBLACK_EX + f"d = {d}" + Fore.RESET)
 
         current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
-        # si la distance entre l'avion et le point visé est plus petite que la distance de virage
-        if (current_pos - fp[fg.TARGETED_LAT_WPT]) <= d:
+        
+        # distance entre l'avion et le point visé
+        distance = current_pos - fp[fg.TARGETED_LAT_WPT]
+
+        # si la distance entre l'avion et le point visé est plus petite que la distance de virage et que le point visé est un fly-by
+        # ou que la distance entre l'avion et le point visé est plus petite que le rayon de flyover et que le point visé est un fly-over
+        if distance <= d and fp[fg.TARGETED_LAT_WPT].fly_by or distance <= fd.FLYOVER_RADIUS and fp[fg.TARGETED_LAT_WPT].fly_over:
             if fg.TARGETED_LAT_WPT + 1 < len(fp): # on ne déborde pas le plan de vol
-                fg.TARGETED_LAT_WPT += 1
                 # envoyer l'axe suivant
-                a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
-        else:
-            a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
+                fg.TARGETED_LAT_WPT += 1
+        
+        a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
     else:
         a = Axis(fp[0], fp[1])
+        
     IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.chi}")
     if fg.LOG:
         print(f"[*]{Fore.LIGHTBLACK_EX} {a}{Fore.RESET}")
