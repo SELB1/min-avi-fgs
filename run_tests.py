@@ -1,3 +1,3 @@
 import fgs.tests as t
 
-print(t.__dir__())
+t.test_axis.run()

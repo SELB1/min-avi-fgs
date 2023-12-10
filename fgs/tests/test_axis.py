@@ -46,12 +46,16 @@ def on_axis(agent, *a):
     """
     Appellé quand un axe de consigne est reçu
     """
+    # Longueur représentée de l'axe
     lengh = 2000
+    # Angle de l'axe, en degrés et en radians
     chi_deg = float(a[2])
     chi = chi_deg * pi/180
+    # p0 et p1 sont les deux points qui forment l'axe
     p0 = Point(a[0], a[1])
     p1 = Point(p0.x + lengh*cos(chi), p0.y + lengh*sin(chi))
     print(f"x={p0.x} y={p0.y} chi={chi_deg}")
+    # Affichage
     plt.plot((p0.x, p1.x), (p0.y, p1.y), 'bo-', label="Axe envoyé")
     plt.legend()
 
@@ -62,16 +66,18 @@ def run_ivy(p0:Point, fp_path="data/flightplan.csv"):
     plot_flight(flightplan)
 
     plt.plot(p0.x, p0.y, 'go', label="Position de l\'avion")
-    sleep(0.5)
+
     IvySendMsg(f"StateVector x={p0.x} y={p0.y} z=0 Vp=69 fpa=0 psi=0 phi=0")
     plt.show()
 
 def run():
     print(f"{Fore.LIGHTWHITE_EX}Test consigne d'axe")
 
+    # Initialisation de Ivy
     IvyInit("AVI_FGS", "Ready", 0, void_function, void_function)
     IvyStart("127.255.255.255:2010")
     IvyBindMsg(on_axis, '^Axis x=(\S+) y=(\S+) chi=(\S+)')
+    sleep(0.5) # délai pour Ivy (ne fonctionne pas sans)
 
     # Cas 1 : avion trop loin d'un point du PDV
     print(f"{Fore.GREEN}Cas 1 :{Fore.RESET} avion trop loin d'un point du PDV")
@@ -91,12 +97,4 @@ def run():
     p0 = Point(-3000, -1500)
     run_ivy(p0)
 
-    IvyStop()
-
-def test():
-    IvyInit("AVI_FGS", "Ready", 0, void_function, void_function)
-    IvyStart("127.255.255.255:2010")
-    sleep(0.1)
-    IvySendMsg("StateVector x=-3000 y=-5000 z=0 Vp=69 fpa=0 psi=0 phi=0")
-    IvySendMsg("Test a=5.3")
     IvyStop()
