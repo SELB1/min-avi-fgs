@@ -24,12 +24,7 @@ def setup_ivy():
     
     IvyStart("10.1.127.255:2012")
 
-def send_speed_limits(vmin, vmax):
-    IvySendMsg(f"SpeedLimits vmin={vmin} vmax={vmax}")
-
-def send_managed_speed(vi):
-    IvySendMsg(f"ManagedSpeed vi={vi}")
-
+    Ivystop()
 
 
 
