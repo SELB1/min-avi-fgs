@@ -14,8 +14,8 @@ def loadfactors():
     nx_neg, nx_neg_AP=-1
     nz_pos, nz_pos_AP=2.5
     nz_neg, nz_neg_AP=-1
-    IvySendMsg(f"LimitsNAP nx_neg_AP=(\S+) nx_pos_AP=(\S+) nz_neg_AP=(\S+) nz_pos_AP=(\S+)")
-    IvySendMsg(f"LimitsN nx_neg=(\S+) nx_pos=(\S+) nz_neg=(\S+) nz_pos=(\S+)")
+    IvySendMsg(f"LimitsNAP nx_neg_AP={nx_neg_AP} nx_pos_AP={nx_pos_AP} nz_neg_AP={nz_neg_AP} nz_pos_AP={nz_pos_AP}")
+    IvySendMsg(f"LimitsN nx_neg={nx_neg} nx_pos={nx_pos} nz_neg={nz_neg} nz_pos={nz_pos}")
     
           
 
