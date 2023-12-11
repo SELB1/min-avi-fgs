@@ -5,10 +5,11 @@ from ivy.std_api import *
 
 
 def speed_limits(vmin, vmax):
-    print(f"Speed limits received: Vmin = {128}, Vmax = {180}")
+    IvySendMsg(f"v_min={v_min}")
+    IvySendMsg(f"v_max={v_max}")
 
 def managed_speed(vi):
-    print(f"Managed speed received: Vi = {140}")
+    IvySendMsg(f"managed speed vi={vi}")
 
 def setup_ivy():
     nh = lambda _x, _y: 1
