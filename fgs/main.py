@@ -28,7 +28,7 @@ def bind_messages():
     """
     IvyBindMsg(on_state_vector, '^StateVector x=(\S+) y=(\S+) z=(\S+) Vp=(\S+) fpa=(\S+) psi=(\S+) phi=(\S+)')
     IvyBindMsg(on_test, '^Test a=(\S+)')
-    print("[-] " + Fore.GREEN + "Ivy binds ok" + Fore.RESET)
+    print("[-] " + Fore.LIGHTBLUE_EX + "Ivy binds ok" + Fore.RESET)
 
 def init_fgs():
     DirWind = 15*180/pi
