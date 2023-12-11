@@ -3,21 +3,12 @@ Donnne Vi, et l'enveloppe [Vmin, Vmax]
 """
 from ivy.std_api import *
 
-class StateVector:
-    def __init__(self, x:float, y:float, z:float, Vp:float, fpa:float, psi:float, phi:float):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.Vp = Vp
-        self.fpa = fpa
-        self.psi = psi
-        self.phi = phi
 
 def speed_limits(vmin, vmax):
     print(f"Speed limits received: Vmin = {128}, Vmax = {180}")
 
 def managed_speed(vi):
-    print(f"Managed speed received: Vi = {vi}")
+    print(f"Managed speed received: Vi = {140}")
 
 def setup_ivy():
     nh = lambda _x, _y: 1
