@@ -17,6 +17,17 @@ pip install -r requirements.txt
 ### Intégration sur le bus Ivy
 * Lancer le ```main.py``` se trouvant à la racine du dépot
 
+```
+$ python main.py -h
+usage: FGS [-h] [-b IVY_ADDRESS]
+
+Connects to the Ivy bus and sends the messages according to specs
+
+options:
+  -h, --help      show this help message and exit
+  -b IVY_ADDRESS  Ivy bind adress
+```
+
 ## Messages IVY envoyés
 
 ### Vent et déclinaison magnétique

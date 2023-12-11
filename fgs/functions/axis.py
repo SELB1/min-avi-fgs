@@ -1,34 +1,18 @@
 """
-Donne la consigne d'axe en fonction de la position actuelle de l'avion et du plan de vol
+Donne la consigne d'axe en fonction de la position actuelle de l'avion, du plan de vol et du point visé
 
 Méthode de sélection d'axe :
-    - Dans le plan de vol, on trouve le point le plus proche de l'avion
-    - Si ce point est très proche d'un autre, on sélectionne l'axe suivant 
+    - On sélectionne par défault l'axe formé par les points d'indice fg.TARGETED_LAT_WPT-1 et fg.TARGETED_LAT_WPT
+    - Si l'avion est suffisement proche du point d'indice fg.TARGETED_LAT_WPT, on envoie l'axe suivant et on incrémente fg.TARGETED_LAT_WPT
 """
 from math import sqrt, atan, pi, tan
 from ivy.std_api import *
+from colorama import Fore
 
-__FGS_TARGETED_WPT = None
+import fgs.globals as fg
+import fgs.defs as fd
 
-class Point:
-    def __init__(self, x, y, name=""):
-        self.x = x
-        self.y = y
-        self.name = name
-    
-    def __sub__(self, other):
-        """
-        Distance entre deux points
-        """
-        return sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
-
-
-class Axis:
-    def __init__(self, first:Point, second:Point):
-        # x => Nord (vrai)
-        # y => Est
-        self.chi = atan((second.x - first.x)/(second.y - first.y)) * 180/pi
-        self.p0 = first
+from fgs.defs import Point, Axis, StateVector
 
 def get_flightplan(path="../../data/flightplan.csv"):
     res = []
@@ -38,35 +22,61 @@ def get_flightplan(path="../../data/flightplan.csv"):
             res.append(Point(float(t[1]), float(t[2]), t[0]))
     return res
 
-def get_axis(StateVector:object, fp_path="../../data/flightplan.csv"):
+def join_FLPN(fp_path="../../data/flightplan.csv"):
     """
+    Rejoint le plan de vol si l'avion est à au plus FLPN_JOIN_RADIUS d'un point
+    """
+    fp = get_flightplan(fp_path)
+    current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
+    for i in range(fg.TARGETED_LAT_WPT, len(fp)):
+        if fp[i] - current_pos <= fd.FLPN_JOIN_RADIUS:
+            if fg.LOG:
+                print(f"[*] On FLPN{Fore.LIGHTBLACK_EX} TARGETED_LAT_WPT={fg.TARGETED_LAT_WPT}{Fore.RESET}")
+            fg.TARGETED_LAT_WPT = i
+
+def get_axis(fp_path="../../data/flightplan.csv"):
+    """
+    Le state vector doit avoir été reçu avant de pouvoir donner un axe
     flyby_radius : distance à laquelle l'avion capture l'axe suivant
     """
-    global __FGS_TARGETED_WPT
-    if __FGS_TARGETED_WPT is None:
-        __FGS_TARGETED_WPT = 0
-    
-    SV = StateVector
     fp = get_flightplan(fp_path)
     
     # Rayon de virage
     phimax = 15 #degrés
-    R = SV.Vp**2/(g*tan(phimax*pi/180))
+    R = fg.STATE_VECTOR.Vp**2/(9.81*tan(phimax*pi/180))
 
     # Distance au WPT pour entamer le virage
     delta_chi = None
-    t_wpt = __FGS_TARGETED_WPT
-
-    if __FGS_TARGETED_WPT > 1:
+    t_wpt = fg.TARGETED_LAT_WPT
+    a = None
+    if fg.TARGETED_LAT_WPT > 1:
         current_axis = Axis(fp[t_wpt-1], fp[t_wpt])
-        last_axis = Axis(fp[t_wpt-2], fp[t_wtp-1])
+        last_axis = Axis(fp[t_wpt-2], fp[t_wpt-1])
         delta_chi = current_axis.chi - last_axis.chi
+
+        d = R * tan(delta_chi/2) * 1.5
+        if fg.LOG:
+            print("[*] " + Fore.LIGHTBLACK_EX + f"d = {d}" + Fore.RESET)
+
+        current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
+        
+        # distance entre l'avion et le point visé
+        distance = current_pos - fp[fg.TARGETED_LAT_WPT]
+
+        # si la distance entre l'avion et le point visé est plus petite que la distance de virage et que le point visé est un fly-by
+        # ou que la distance entre l'avion et le point visé est plus petite que le rayon de flyover et que le point visé est un fly-over
+        if distance <= d and fp[fg.TARGETED_LAT_WPT].fly_by or distance <= fd.FLYOVER_RADIUS and fp[fg.TARGETED_LAT_WPT].fly_over:
+            if fg.TARGETED_LAT_WPT + 1 < len(fp): # on ne déborde pas le plan de vol
+                # envoyer l'axe suivant
+                fg.TARGETED_LAT_WPT += 1
+        
+        a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
     else:
-
-
-    d = R * tan()
+        a = Axis(fp[0], fp[1])
 
     IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.chi}")
+    if fg.LOG:
+        print(f"[*]{Fore.LIGHTBLACK_EX} {a}{Fore.RESET}")
 
 if __name__ == "__main__":
     p1 = Point(.0, .0)

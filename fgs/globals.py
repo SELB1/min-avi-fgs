@@ -1,8 +1,16 @@
-# Global variables
-__FGS_STATE_VECTOR = None
-__FGS_TARGETED_LAT_WPT = None
+"""
+Variables globales du module, partagées par les fonctions et mises à jour par les callback Ivy
+"""
 
-# Constants
-__FGS_FLYBY_RADIUS = 1852
-__FGS_FLYOVER_RADIUS = 185
-__FGS_MAGNETIC_DECLINATION = 13.59
+# NOTE IMPORTANTE: Veiller à utiliser la bonne instruction pour importer les variables globales !
+
+# Bonne manière de faire : accède à la dernière valeur de la variable s'il elle a été modifiée
+# >>> import fgs.globals as fg
+# >>> fg.STATE_VECTOR
+
+# Mauvaise manière : ne fonctionne pas et créé une copie de la variable dans le module courant
+# >>> from fgs.globals import STATE_VECTOR
+
+STATE_VECTOR = None
+TARGETED_LAT_WPT = 1
+LOG = True

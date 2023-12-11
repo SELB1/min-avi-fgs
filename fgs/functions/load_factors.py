@@ -3,15 +3,7 @@ Donne nx, nz et nx_AP, nz_AP
 """
 from ivy.std_api import *
 
-class StateVector:
-    def __init__(self, x:float, y:float, z:float, Vp:float, fpa:float, psi:float, phi:float):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.Vp = Vp
-        self.fpa = fpa
-        self.psi = psi
-        self.phi = phi
+from fgs.defs import StateVector
         
 def callback(agent, *data):
     print(f"Ivy message received: {data}")
