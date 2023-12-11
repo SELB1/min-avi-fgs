@@ -4,11 +4,14 @@ Donnne Vi, et l'enveloppe [Vmin, Vmax]
 from ivy.std_api import *
 
 
-def speed_limits(vmin, vmax):
-    IvySendMsg(f"v_min={v_min}")
-    IvySendMsg(f"v_max={v_max}")
+def speed_limits():
+    vmin = 110
+    vmax = 180
+    IvySendMsg(f"v_min={vmin}")
+    IvySendMsg(f"v_max={vmax}")
 
-def managed_speed(vi):
+def managed_speed():
+    vi = 150
     IvySendMsg(f"managed speed vi={vi}")
 
 def setup_ivy():
