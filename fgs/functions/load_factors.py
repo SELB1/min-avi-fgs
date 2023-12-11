@@ -3,15 +3,7 @@ Donne nx, nz et nx_AP, nz_AP
 """
 from ivy.std_api import *
 
-class StateVector:
-    def __init__(self, x:float, y:float, z:float, Vp:float, fpa:float, psi:float, phi:float):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.Vp = Vp
-        self.fpa = fpa
-        self.psi = psi
-        self.phi = phi
+from fgs.defs import StateVector
         
 def callback(agent, *data):
     print(f"Ivy message received: {data}")
@@ -21,7 +13,7 @@ def loadfactors():
     nx_max=2.5
     nx_min=-1
     nz_max=2.5
-    nz_min=2.5
+    nz_min=-1
     nx_AP=2.5
     nz_AP=2.5
     IvySendMsg(f"NxControl nx_max={nx_max}")
@@ -45,3 +37,4 @@ def setup_ivy():
     IvyStart("10.1.127.255:2012")
     
     IvyStop()
+    
