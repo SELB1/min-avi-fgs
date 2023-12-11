@@ -14,3 +14,5 @@ Variables globales du module, partagées par les fonctions et mises à jour par 
 STATE_VECTOR = None
 TARGETED_LAT_WPT = 1
 LOG = True
+LDG = 0
+FLAP = 0

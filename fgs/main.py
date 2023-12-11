@@ -32,7 +32,8 @@ def bind_messages():
     Bind all Ivy messages
     """
     IvyBindMsg(on_state_vector, '^StateVector x=(\S+) y=(\S+) z=(\S+) Vp=(\S+) fpa=(\S+) psi=(\S+) phi=(\S+)')
-    IvyBindMsg(on_configuration, '^MancheFlap f=(\S+)')
+    IvyBindMsg(on_flap, '^MancheFlap f=(\S+)')
+    IvyBindMsg(on_ldg, '^MancheLdg ldg=(\S+)')
     IvyBindMsg(on_test, '^Test a=(\S+)')
     print("[-] " + Fore.LIGHTBLUE_EX + "Ivy binds ok" + Fore.RESET)
 
@@ -44,3 +45,9 @@ def init_fgs():
     IvySendMsg(f'InitStateVector x=0 y=0 z=0 Vp=128 fpa=0 psi={route-d} phi=0')
     IvySendMsg(f'MagneticDeclination={fd.MAGNETIC_DEVIATION}')
     IvySendMsg('WindComponent VWind=10 dirWind=15')
+
+def on_ldg(agent, *a):
+    fg.LDG = fd.MancheLdg(a[0])
+
+def on_flap(agent, *a):
+    fg.FLAP = fd.MancheFlap(a[0])
