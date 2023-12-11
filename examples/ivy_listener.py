@@ -11,7 +11,6 @@ IvyInit("Test",
     nh,
     nh
 )
+IvyStart("127.255.255.255:2012")
 IvyBindMsg(callback, '^Test aaa=(\S+)')
-IvyStart("10.1.127.255:2012")
 IvyMainLoop()
-IvyStop()
