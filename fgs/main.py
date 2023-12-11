@@ -8,8 +8,7 @@ from colorama import Fore
 import fgs.globals as fg
 import fgs.defs as fd
 
-import fgs.functions.axis as axis
-import fgs.functions.speeds as speeds
+import fgs.functions as fn
 
 def on_state_vector(agent, *a):
     # Store state vector
@@ -17,15 +16,19 @@ def on_state_vector(agent, *a):
     if fg.LOG:
         print("[*] " + Fore.LIGHTBLACK_EX + str(fg.STATE_VECTOR) + Fore.RESET)
     # Call axis capture functions
-    axis.join_FLPN(fp_path="data/flightplan.csv")
-    axis.get_axis(fp_path="data/flightplan.csv")
+    fn.axis.join_FLPN(fp_path="data/flightplan.csv")
+    fn.axis.get_axis(fp_path="data/flightplan.csv")
 
 def on_test(agent, *a):
     print("Test received!")
 
+def on_DIRTO(agent, *a):
+    to_point = Point(a[0], a[1])
+    fn.dirto.get_DIRTO_axis(to_point)
+
 def on_configuration(agent, *a):
-    speeds.speed_limits(a[0])
-    speeds.managed_speed(a[0])
+    fn.speeds.speed_limits(a[0])
+    fn.speeds.managed_speed(a[0])
 
 def bind_messages():
     """
@@ -35,6 +38,8 @@ def bind_messages():
     IvyBindMsg(on_flap, '^MancheFlap f=(\S+)')
     IvyBindMsg(on_ldg, '^MancheLdg ldg=(\S+)')
     IvyBindMsg(on_test, '^Test a=(\S+)')
+    IvyBindMsg(on_DIRTO, '^DIRTO x=(\S+) y=(\S+)')
+
     print("[-] " + Fore.LIGHTBLUE_EX + "Ivy binds ok" + Fore.RESET)
 
 def init_fgs():
