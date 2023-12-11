@@ -1,45 +1,15 @@
 from math import sqrt, atan2, degrees, pi, tan
 from ivy.std_api import *
+from colorama import Fore
 
-from fgs.defs import Point, Axis
+from fgs.defs import Point, Axis, get_flightplan
+import fgs.globals as fg
 
-def get_flightplan(path="../../data/flightplan.csv"):
-    res = []
-    with open(path, "r") as f:
-        for line in f:
-            t = line.rstrip().split(',')
-            res.append(Point(float(t[1]), float(t[2]), t[0]))
-    return res
-
-def calculate_direction_to_waypoint(current_position, waypoint):
-    # Calcul de la direction vers le waypoint en degrés
-    direction = atan2(waypoint.x - current_position.x, waypoint.y - current_position.y) * 180/pi
-    return direction
-
-def send_dirto_command(direction):
-    IvySendMsg(f"DIRTO {direction}")
-
-def get_axis(StateVector: object, fp_path="../../data/flightplan.csv"):
-    global __FGS_TARGETED_WPT
-    if __FGS_TARGETED_WPT is None:
-        __FGS_TARGETED_WPT = 0
+def get_DIRTO_axis(to_point:Point):
+    if fg.LOG:
+        print(f"[*]{Fore.LIGHTCYAN_EX} DIRTO x={to_point.x} y={to_point.y} {Fore.RESET}")
     
-    SV = StateVector
-    fp = get_flightplan(fp_path)
-    
-    # Rayon de virage
-    phimax = 15  # degrés
-    R = SV.Vp**2 / (g * tan(phimax * pi / 180))
-
-    # Calcul de la direction vers le waypoint cible
-    if __FGS_TARGETED_WPT < len(fp):
-        waypoint = fp[__FGS_TARGETED_WPT]
-        direction_to_waypoint = calculate_direction_to_waypoint(Point(SV.x, SV.y), waypoint)
-        send_dirto_command(direction_to_waypoint)
-
-if __name__ == "__main__":
-    p1 = Point(0.0, 0.0)
-    p2 = Point(2.0, 2.0)
-    print(f"||p1 - p2|| = {p1 - p2}")
-
+    current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
+    a = Axis(current_pos, to_point)
+    IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.chi}")
 
