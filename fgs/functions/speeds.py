@@ -16,7 +16,21 @@ class StateVector:
 def speed_limits(vmin, vmax):
     print(f"Speed limits received: Vmin = {128}, Vmax = {180}")
 
-def managed_speed(vi):
+def managed_speed(flap, ldg):
+    if ldg == 0 :
+        if flap == 0 :
+            
+        elif flap == 1 :
+
+        else :
+
+    else :
+        if flap == 0 :
+
+        elif flap == 1 :
+
+        else :
+            
     print(f"Managed speed received: Vi = {vi}")
 
 def setup_ivy():
@@ -31,7 +45,9 @@ def setup_ivy():
     IvyBindMsg(speed_limits, '^SpeedLimits vmin=(\S+) vmax=(\S+)') #(*à modifier*)
     IvyBindMsg(managed_speed, '^ManagedSpeed vi=(\S+)') #(*à modifier*)
     
-    IvyStart("10.1.127.255:2012")
+    IvyBindMsg(speed_limits, '^MancheFlap f=(\S+)')
+
+    IvyStart("10.1.127.255:2012") 
 
 def send_speed_limits(vmin, vmax):
     IvySendMsg(f"SpeedLimits vmin={vmin} vmax={vmax}")
