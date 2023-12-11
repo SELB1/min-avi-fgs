@@ -4,6 +4,7 @@ Fichier principal
 from ivy.std_api import *
 from math import *
 from colorama import Fore
+from time import sleep
 # Prefixed variables
 import fgs.globals as fg
 import fgs.defs as fd
@@ -15,9 +16,12 @@ def on_state_vector(agent, *a):
     fg.STATE_VECTOR = fd.StateVector(a[0], a[1], a[2], a[3], a[4], a[5], a[6])
     if fg.LOG:
         print("[*] " + Fore.LIGHTBLACK_EX + str(fg.STATE_VECTOR) + Fore.RESET)
-    # Call axis capture functions
-    fn.axis.join_FLPN(fp_path="data/flightplan.csv")
+    # Call lateral FLPN capture functions
+    fn.axis.join_lat_FLPN(fp_path="data/flightplan.csv")
     fn.axis.get_axis(fp_path="data/flightplan.csv")
+    # Call vertical FLPN capture functions
+    fn.altitude.join_hgt_FLPN(fp_path="data/flightplan.csv")
+    fn.altitude.get_alt(fp_path="data/flightplan.csv")
 
 def on_test(agent, *a):
     print("Test received!")
@@ -40,6 +44,7 @@ def bind_messages():
     IvyBindMsg(on_test, '^Test a=(\S+)')
     IvyBindMsg(on_DIRTO, '^DIRTO x=(\S+) y=(\S+)')
 
+    sleep(0.1)
     print("[-] " + Fore.LIGHTBLUE_EX + "Ivy binds ok" + Fore.RESET)
 
 def init_fgs():
