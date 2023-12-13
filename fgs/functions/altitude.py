@@ -27,14 +27,25 @@ def get_alt(fp_path="../../data/flightplan.csv"):
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     # Si l'avion est dans le rayon de rejointe et que son altitude est suffisement proche de celle du point
     if fp[t_wpt] - current_pos <= fd.FLPN_JOIN_RADIUS and abs(fp[t_wpt].z - current_pos.z) <= fd.FLPN_JOIN_HEIGHT:
-        # Si l'altitude est valide
-        if fp[t_wpt].z > 0:
-            # Si l'avion est en dessous de l'altitude de transition
-            if fp[t_wpt].z <= fd.TRANSITION_ALTITUDE:
-                height_QNH = ((fd.STD_ATM - fd.QNH)*28/fd.M_TO_FT + fp[t_wpt].z) * fd.M_TO_FT
-                IvySendMsg(f"ManagedAlt alt={height_QNH} Q={fd.QNH}")
-            else: 
-                # sans doute faux
-                fl = fp[t_wpt].z * 3.28
-                IvySendMsg(f"ManagedAlt alt={fl} Q={fd.STD_ATM}")
-        fg.TARGETED_HGT_WPT += 1
+        # Si l'altitude est négative
+        if fp[t_wpt].z < 0:
+            ff_wpt = t_wpt
+            while fp[ff_wpt].z < 0 and ff_wpt<len(fp)-1:
+                ff_wpt += 1
+            t_wpt = ff_wpt
+        elif fg.TARGETED_HGT_WPT < len(fp)-1:
+            fg.TARGETED_HGT_WPT += 1
+            
+        IvySendMsg(f"ManagedAlt alt={fp[t_wpt].z*fd.M_TO_FT} Q={fd.STD_ATM}")
+
+        # Si l'avion est en dessous de l'altitude de transition
+        """
+        # Trop compliqué
+        if fp[t_wpt].z <= fd.TRANSITION_ALTITUDE:
+            height_QNH = ((fd.STD_ATM - fd.QNH)*28/fd.M_TO_FT + fp[t_wpt].z) * fd.M_TO_FT
+            IvySendMsg(f"ManagedAlt alt={height_QNH} Q={fd.QNH}")
+        else: 
+            # sans doute faux
+            fl = fp[t_wpt].z * fd.M_TO_FT
+            IvySendMsg(f"ManagedAlt alt={fl} Q={fd.STD_ATM}")
+        """
