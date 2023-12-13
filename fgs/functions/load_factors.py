@@ -10,18 +10,13 @@ def callback(agent, *data):
 clear
 
 def loadfactors():
-    nx_max=2.5
-    nx_min=-1
-    nz_max=2.5
-    nz_min=-1
-    nx_AP=2.5
-    nz_AP=2.5
-    IvySendMsg(f"NxControl nx_max={nx_max}")
-    IvySendMsg(f"NxControl nx_min={nx_min}")
-    IvySendMsg(f"NxControl nz_max={nz_max}")
-    IvySendMsg(f"NxControl nz_min={nz_min}")
-    IvySendMsg(f"NxAPControl nxAP={nx_AP}")
-    IvySendMsg(f"NzAPControl nzAP={nz_AP}")
+    nx_pos, nx_pos_AP=2.5
+    nx_neg, nx_neg_AP=-1
+    nz_pos, nz_pos_AP=2.5
+    nz_neg, nz_neg_AP=-1
+    IvySendMsg(f"LimitsNAP nx_neg_AP={nx_neg_AP} nx_pos_AP={nx_pos_AP} nz_neg_AP={nz_neg_AP} nz_pos_AP={nz_pos_AP}")
+    IvySendMsg(f"LimitsN nx_neg={nx_neg} nx_pos={nx_pos} nz_neg={nz_neg} nz_pos={nz_pos}")
+    
           
 
 def setup_ivy():

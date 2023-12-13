@@ -22,16 +22,16 @@ def get_flightplan(path="../../data/flightplan.csv"):
             res.append(Point(float(t[1]), float(t[2]), t[0]))
     return res
 
-def join_FLPN(fp_path="../../data/flightplan.csv"):
+def join_lat_FLPN(fp_path="../../data/flightplan.csv"):
     """
-    Rejoint le plan de vol si l'avion est à au plus FLPN_JOIN_RADIUS d'un point
+    Rejoint le plan de vol latéral si l'avion est à au plus FLPN_JOIN_RADIUS d'un point
     """
     fp = get_flightplan(fp_path)
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     for i in range(fg.TARGETED_LAT_WPT, len(fp)):
         if fp[i] - current_pos <= fd.FLPN_JOIN_RADIUS:
             if fg.LOG:
-                print(f"[*] FLPN joined{Fore.LIGHTBLACK_EX} TARGETED_LAT_WPT={fg.TARGETED_LAT_WPT}{Fore.RESET}")
+                print(f"[*] On lateral FLPN{Fore.LIGHTBLACK_EX} TARGETED_LAT_WPT={fg.TARGETED_LAT_WPT}{Fore.RESET}")
             fg.TARGETED_LAT_WPT = i
 
 def get_axis(fp_path="../../data/flightplan.csv"):
@@ -73,7 +73,7 @@ def get_axis(fp_path="../../data/flightplan.csv"):
         a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
     else:
         a = Axis(fp[0], fp[1])
-        
+
     IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.chi}")
     if fg.LOG:
         print(f"[*]{Fore.LIGHTBLACK_EX} {a}{Fore.RESET}")

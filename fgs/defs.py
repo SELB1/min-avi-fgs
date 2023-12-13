@@ -20,9 +20,10 @@ class StateVector:
         return self.__str__()
 
 class Point:
-    def __init__(self, x, y, fly_over=False, fly_by=True, name=""):
+    def __init__(self, x, y, z=-1, fly_over=False, fly_by=True, name=""):
         self.x = float(x)
         self.y = float(y)
+        self.z = float(z)
         self.name = name
         self.fly_over = fly_over
         self.fly_by = fly_by
@@ -58,7 +59,7 @@ def get_flightplan(path="./../../data/flightplan.csv"):
                     flyby = True
                 case 'flyover':
                     flyover = True
-            res.append(Point(float(t[1]), float(t[2]), flyover, flyby, t[0]))
+            res.append(Point(t[1], t[2], t[3], flyover, flyby, t[0]))
     return res
 
 ### CONSTANTS ###
@@ -67,3 +68,8 @@ FLYOVER_RADIUS = 185
 MAGNETIC_DEVIATION = 13.59
 FLPN_JOIN_RADIUS = 2*1852 # 2 NM
 FLYOVER_RADIUS = 0.4*1852 # 0.4 NM
+FLPN_JOIN_HEIGHT = 3000*0.3048 # 3000 ft
+STD_ATM = 1013.25 # hPa
+QNH = 1018 # hPa
+TRANSITION_ALTITUDE = 5000*0.3048 # 5000 ft
+M_TO_FT = 3.28084 # ft/m

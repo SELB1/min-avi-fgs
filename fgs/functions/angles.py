@@ -7,7 +7,7 @@ maneuvering_speed = 128 #internet
 
 def callback(agent, *data):
     print(f"Ivy message received: {data}")
-
+clear
 
 
 def send_bank_angle(state_vector):
