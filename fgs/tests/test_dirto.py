@@ -1,4 +1,4 @@
-from ivy.std_api import IvyInit, IvyStart, IvyBindMsg, IvyMainLoop, IvyStop
+from ivy.std_api import IvyInit, IvyStart, IvySendMsg, IvyMainLoop, IvyStop
 
 def null_cb(*a):
     pass
@@ -12,7 +12,7 @@ def test_dirto():
     IvyStart("10.1.127.255:2012")
 
     # Liaison de la fonction de rappel à un motif de message Ivy correspondant à la fonction on_dirto
-    IvyBindMsg(on_dirto, "^DIRTO x=(\S+) y=(\S+)")
+    IvySendMsg(on_dirto, "DIRTO x=(\S+) y=(\S+)")
 
     # Boucle principale Ivy pour attendre les messages
     IvyMainLoop()
