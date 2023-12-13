@@ -12,15 +12,7 @@ from colorama import Fore
 import fgs.globals as fg
 import fgs.defs as fd
 
-from fgs.defs import Point, Axis, StateVector
-
-def get_flightplan(path="../../data/flightplan.csv"):
-    res = []
-    with open(path, "r") as f:
-        for line in f:
-            t = line.rstrip().split(',')
-            res.append(Point(float(t[1]), float(t[2]), t[0]))
-    return res
+from fgs.defs import Point, Axis, StateVector, get_flightplan
 
 def join_lat_FLPN(fp_path="../../data/flightplan.csv"):
     """

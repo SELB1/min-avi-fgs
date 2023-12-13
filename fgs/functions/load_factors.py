@@ -7,7 +7,7 @@ from fgs.defs import StateVector
         
 def callback(agent, *data):
     print(f"Ivy message received: {data}")
-clear
+
 
 def loadfactors():
     nx_pos, nx_pos_AP=2.5

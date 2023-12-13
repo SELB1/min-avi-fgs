@@ -1,5 +1,8 @@
 """
 Donnne Vi, et l'enveloppe [Vmin, Vmax]
+
+^SpeedLimits vmin=(\S+) vmax=(\S+)
+^ManagedSpeed vi=(\S+) 
 """
 from ivy.std_api import *
 import fgs.globals as fg
@@ -23,8 +26,7 @@ def speed_limits():
             vmax = 200
 
     vmin = 80
-    IvySendMsg(f"v_min={vmin}")
-    IvySendMsg(f"v_max={vmax}")
+    IvySendMsg(f"SpeedLimits vmin={vmin} vmax={vmax}")
 
 def managed_speed():
     ldg = fg.LDG
@@ -41,9 +43,9 @@ def managed_speed():
             vmax = 250
         elif flap == 1 :
             vmax = 230
-        else :
+        else:
             vmax = 200
-    IvySendMsg(f"vi={vmax}")
+    IvySendMsg(f"ManagedSpeed vi={vmax}")
 
 def setup_ivy():
     nh = lambda _x, _y: 1
@@ -60,6 +62,3 @@ def setup_ivy():
     IvyStart("10.1.127.255:2012") 
 
     Ivystop()
-
-
-

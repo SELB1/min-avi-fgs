@@ -17,3 +17,4 @@ TARGETED_HGT_WPT = 1
 LOG = True
 LDG = 0
 FLAP = 0
+FP_PATH = "data/flightplan.csv"
