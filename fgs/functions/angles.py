@@ -8,12 +8,11 @@ maneuvering_speed = 128 #internet
 def callback(agent, *data):
     print(f"Ivy message received: {data}")
 
-
 def send_bank_angle():
     # Règles spécifiées pour l'angle de braquage en fonction de la vitesse de manoeuvre
     vp = fg.STATE_VECTOR.Vp
     bank_angle_max = 67 #p1003
-    pmax, pmax_AP = 15
+    pmax, pmax_AP = (15, 15)
     if vp <= maneuvering_speed -10:
         bank_angle_max_AP= 15
     else:

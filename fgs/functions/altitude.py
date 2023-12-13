@@ -1,7 +1,10 @@
 from colorama import Fore
 
 import fgs.globals as fg 
+import fgs.defs as fd
 from fgs.defs import Point, get_flightplan
+
+from ivy.std_api import *
 
 def join_hgt_FLPN(fp_path="../../data/flightplan.csv"):
     """

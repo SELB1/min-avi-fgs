@@ -16,11 +16,12 @@ def on_state_vector(agent, *a):
     fg.STATE_VECTOR = fd.StateVector(a[0], a[1], a[2], a[3], a[4], a[5], a[6])
     if fg.LOG:
         print("[*] " + Fore.LIGHTBLACK_EX + str(fg.STATE_VECTOR) + Fore.RESET)
+    # Send limits FIRST
     # Call vertical FLPN capture functions
-    # fn.altitude.join_hgt_FLPN(fp_path="data/flightplan.csv")
-    # fn.altitude.get_alt(fp_path="data/flightplan.csv")
+    fn.altitude.join_hgt_FLPN(fp_path="data/flightplan.csv")
+    fn.altitude.get_alt(fp_path="data/flightplan.csv")
     # Send angle limits
-
+    fn.angles.send_bank_angle()
     # Call lateral FLPN capture functions
     fn.axis.join_lat_FLPN(fp_path=fg.FP_PATH)
     fn.axis.get_axis(fp_path=fg.FP_PATH)
