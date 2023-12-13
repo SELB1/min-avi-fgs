@@ -60,7 +60,7 @@ def bind_messages():
 def init_fgs():
     DirWind = 15*180/pi
     VWind =  10
-    route = 14
+    route = 14*pi/180
     d = asin(VWind*sin(route - DirWind)/128)
     IvySendMsg(f'InitStateVector x=0 y=0 z=0 Vp=128 fpa=0 psi={route-d} phi=0')
     IvySendMsg(f'MagneticDeclination={fd.MAGNETIC_DEVIATION}')
