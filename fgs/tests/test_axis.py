@@ -41,12 +41,18 @@ def on_axis(agent, *a):
     # Longueur représentée de l'axe
     lengh = 2000
     # Angle de l'axe, en degrés et en radians
-    chi_deg = float(a[2])
-    chi = chi_deg * pi/180
+    cap = float(a[2])
+    # Conversion en radians
+    if 0 <= cap <= 270:
+        chi = 90 - cap
+    else:
+        chi = 270 + 180 - cap
+    chi = chi * pi/180
+    print(f"chi={chi}")
     # p0 et p1 sont les deux points qui forment l'axe
     p0 = Point(a[0], a[1])
     p1 = Point(p0.x + lengh*cos(chi), p0.y + lengh*sin(chi))
-    print(f"x={p0.x} y={p0.y} chi={chi_deg}")
+    print(f"x={p0.x} y={p0.y} cap={cap}")
     # Affichage
     plt.plot((p0.x, p1.x), (p0.y, p1.y), 'bo-', label="Axe envoyé")
     plt.legend()

@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument('-b', dest="ivy_address", help="Ivy bind adress (127.255.255.255:2010 by default)", default="127.255.255.255:2010")
 parser.add_argument('-p', dest="fp_path", help="Path to the CSV flightplan (data/flightplan.csv by default)", default="data/flightplan.csv")
+parser.add_argument('-v', dest="log", help="Enable log messages (disabled by default)", default=False, action="store_true")
 args = parser.parse_args()
 
 def main():
@@ -20,6 +21,7 @@ def main():
     IvyInit("AVI_FGS", "Ready", 0, void_function, void_function)
     IvyStart(args.ivy_address)
     fg.FP_PATH = args.fp_path
+    fg.LOG = args.log
     print(f"[*] {Fore.LIGHTBLUE_EX}Ivy started on {args.ivy_address}{Fore.RESET}")
 
     bind_messages()

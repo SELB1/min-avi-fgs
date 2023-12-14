@@ -40,9 +40,14 @@ class Axis:
         # x => Nord (vrai)
         # y => Est
         self.chi = atan2((second.y - first.y), (second.x - first.x)) * 180/pi
+        if -180 <= self.chi <= 90:
+            self.cap = 90 - self.chi
+        else:
+            self.cap = 270 + (180-self.chi)
+        self.cap = self.cap % 360
         self.p0 = first
     def __str__(self):
-        return f"Axis x={self.p0.x} y={self.p0.y} chi={self.chi}"
+        return f"Axis x={self.p0.x} y={self.p0.y} chi={self.chi} cap={self.cap}"
     def __format__(self, _):
         return self.__str__()
 

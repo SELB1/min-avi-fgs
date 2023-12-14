@@ -66,7 +66,7 @@ def get_axis(fp_path="../../data/flightplan.csv"):
     else:
         a = Axis(fp[0], fp[1])
 
-    IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.chi}")
+    IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.cap}")
     if fg.LOG:
         print(f"[*]{Fore.LIGHTBLACK_EX} {a}{Fore.RESET}")
 

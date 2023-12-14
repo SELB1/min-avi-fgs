@@ -81,7 +81,7 @@ Unités : degrés et °/s
 ```
 
 * (x,z) : origine de l'axe (m)
-* chi : angle de l'axe, par rapport au nord vrai (°)
+* chi : angle de l'axe, par rapport au nord vrai (en °, entre 0 et 359)
 
 ### Altitude managée
 
