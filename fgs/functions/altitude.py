@@ -35,7 +35,9 @@ def get_alt(fp_path="../../data/flightplan.csv"):
             t_wpt = ff_wpt
         elif fg.TARGETED_HGT_WPT < len(fp)-1:
             fg.TARGETED_HGT_WPT += 1
-            
+
+        if fg.LOG:
+            print(f"[*]{Fore.LIGHTBLACK_EX} ManagedAlt alt={fp[t_wpt].z*fd.M_TO_FT}")
         IvySendMsg(f"ManagedAlt alt={fp[t_wpt].z*fd.M_TO_FT} Q={fd.STD_ATM}")
 
         # Si l'avion est en dessous de l'altitude de transition
