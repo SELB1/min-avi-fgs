@@ -11,5 +11,5 @@ def get_DIRTO_axis(to_point:Point):
     
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     a = Axis(current_pos, to_point)
-    IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.chi}")
+    IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.cap}")
 
