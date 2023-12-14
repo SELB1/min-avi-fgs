@@ -22,13 +22,15 @@ pip install -r requirements.txt
 
 ```
 $ python main.py -h
-usage: FGS [-h] [-b IVY_ADDRESS]
+usage: FGS [-h] [-b IVY_ADDRESS] [-p FP_PATH] [-v]
 
 Connects to the Ivy bus and sends the messages according to specs
 
 options:
   -h, --help      show this help message and exit
-  -b IVY_ADDRESS  Ivy bind adress
+  -b IVY_ADDRESS  Ivy bind adress (127.255.255.255:2010 by default)
+  -p FP_PATH      Path to the CSV flightplan (data/flightplan.csv by default)
+  -v              Enable log messages (disabled by default)
 ```
 
 ## Messages IVY envoyés
