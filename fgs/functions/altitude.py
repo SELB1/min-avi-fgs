@@ -25,19 +25,16 @@ def get_alt(fp_path="../../data/flightplan.csv"):
     fp = get_flightplan(fp_path)
     t_wpt = fg.TARGETED_HGT_WPT
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
-    # Si l'avion est dans le rayon de rejointe et que son altitude est suffisement proche de celle du point
-    if fp[t_wpt] - current_pos <= fd.FLPN_JOIN_RADIUS and abs(fp[t_wpt].z - current_pos.z) <= fd.FLPN_JOIN_HEIGHT:
+    # Si l'avion est dans le rayon de rejointe du point visé
+    if fp[t_wpt] - current_pos <= fd.FLPN_JOIN_RADIUS:
         # Si l'altitude est négative
-        if fp[t_wpt].z < 0:
-            ff_wpt = t_wpt
-            while fp[ff_wpt].z < 0 and ff_wpt<len(fp)-1:
-                ff_wpt += 1
-            t_wpt = ff_wpt
-        elif fg.TARGETED_HGT_WPT < len(fp)-1:
-            fg.TARGETED_HGT_WPT += 1
+        while fp[t_wpt] < 1:
+            if t_wpt < len(fp)-1:
+                t_wpt += 1 #on passe au point suivant
 
         if fg.LOG:
             print(f"[*]{Fore.LIGHTBLACK_EX} ManagedAlt alt={fp[t_wpt].z*fd.M_TO_FT}")
+        fg.TARGETED_HGT_WPT = t_wpt
         IvySendMsg(f"ManagedAlt alt={fp[t_wpt].z*fd.M_TO_FT} Q={fd.STD_ATM}")
 
         # Si l'avion est en dessous de l'altitude de transition
