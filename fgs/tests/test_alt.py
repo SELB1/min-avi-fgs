@@ -1,15 +1,71 @@
 from ivy.std_api import *
+from time import sleep
+from colorama import Fore
+import matplotlib.pyplot as plt
 
-def null_cb(*a):
-  pass
+from fgs.defs import Point, get_flightplan, M_TO_FT
+
+def plot_flight(flightplan):
+    # Tracé du plan de vol et des axes
+    plt.figure(figsize=(10, 10))
+
+    # Tracé du plan de vol
+    for point in flightplan:
+        if point.z>0:
+            plt.plot(point.x, point.y, marker='o', color='blue')
+            plt.annotate(f"{point.z}m", (point.x, point.y))
+        else:
+            plt.plot(point.x, point.y, marker='x', color='black')
+
+    # Tracé des axes
+    fp = flightplan
+    for i in range(0, len(fp)):
+        if i+1 < len(fp):
+            plt.plot((fp[i].x, fp[i+1].x), (fp[i].y, fp[i+1].y), marker="", color="red")
+        else:
+            plt.plot((fp[i].x, fp[0].x), (fp[i].y, fp[0].y), marker="", color="red")
+
+    plt.xlabel('Position X')
+    plt.ylabel('Position Y')
+    plt.title('Plan de vol avec axe')
+    plt.grid(True)
+
+def run_ivy(p0:Point, fp_path="data/flightplan.csv"):
+    # Charger le plan de vol
+    flightplan = get_flightplan(fp_path)
+    # Afficher le plan de vol
+    plot_flight(flightplan)
+
+    plt.plot(p0.x, p0.y, 'go', label="Position de l\'avion")
+
+    IvySendMsg(f"StateVector x={p0.x} y={p0.y} z=0 Vp=69 fpa=0 psi=0 phi=0")
+    plt.show()
 
 def on_alts(agent, *data):
-  #global recorded data
-  #recorded_data = data[0]
-  print("alt={}".format(data[0]))
+  plt.annotate(f"Consigne : {float(data[0])/M_TO_FT}", (-1500, -2000))
 
-IvyInit("Altitudes", "[%s ready]", 0, null_cb, null_cb)
-IvyStart("10.1.127.255:2012")
+def run():
+    IvyInit("Altitudes", "[%s ready]", 0, void_function, void_function)
+    IvyStart("127.255.255.255:2010")
+    sleep(0.1)
+    IvyBindMsg(on_alts, '^ManagedAlt alt=(\S+) Q=(\S+)')
 
-IvyBindMsg(on_alts, "^Altitudes are (\S+)")
-IvyMainLoop()
+    # Cas 1 : Avion trop loin du point du plan de vol
+    print(f"{Fore.GREEN}Cas 1 :{Fore.RESET} avion trop loin d'un point du PDV")
+    input("[enter] pour continuer : ")
+    p0 = Point(-2000, 5000)
+    run_ivy(p0)
+
+    # Cas 2 : Avion près d'un point avec une altitude négative
+    print(f"{Fore.GREEN}Cas 2 :{Fore.RESET} avion près d\'un point avec une altitude non saisie")
+    input("[enter] pour continuer : ")
+    p0 = Point(350, -3500)
+    run_ivy(p0)
+
+    # Cas 3 : Rejointe du plan de vol
+    print(f"{Fore.GREEN}Cas 3 :{Fore.RESET} Rejointe du plan de vol")
+    input("[enter] pour continuer : ")
+    p0 = Point(-2000, 10000)
+    run_ivy(p0)
+
+    IvyStop()

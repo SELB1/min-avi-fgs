@@ -13,7 +13,7 @@ def join_hgt_FLPN(fp_path="../../data/flightplan.csv"):
     fp = get_flightplan(fp_path)
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     for i in range(fg.TARGETED_HGT_WPT, len(fp)):
-        if fp[i] - current_pos <= fd.FLPN_JOIN_RADIUS and abs(fp[i].z - current_pos.z) <= fd.FLPN_JOIN_HEIGHT:
+        if fp[i] - current_pos <= fd.FLPN_JOIN_RADIUS:
             if fg.LOG:
                 print(f"[*] On vertical FLPN{Fore.LIGHTBLACK_EX} TARGETED_HGT_WPT={fg.TARGETED_HGT_WPT}{Fore.RESET}")
             fg.TARGETED_HGT_WPT = i
@@ -28,10 +28,9 @@ def get_alt(fp_path="../../data/flightplan.csv"):
     # Si l'avion est dans le rayon de rejointe du point visé
     if fp[t_wpt] - current_pos <= fd.FLPN_JOIN_RADIUS:
         # Si l'altitude est négative
-        while fp[t_wpt] < 1:
+        while fp[t_wpt].z < 0:
             if t_wpt < len(fp)-1:
                 t_wpt += 1 #on passe au point suivant
-
         if fg.LOG:
             print(f"[*]{Fore.LIGHTBLACK_EX} ManagedAlt alt={fp[t_wpt].z*fd.M_TO_FT}")
         fg.TARGETED_HGT_WPT = t_wpt

@@ -17,19 +17,19 @@ def on_state_vector(agent, *a):
     if fg.LOG:
         print("[*] " + Fore.LIGHTBLACK_EX + str(fg.STATE_VECTOR) + Fore.RESET)
     # Send limits FIRST
-    # Call vertical FLPN capture functions
-    fn.altitude.join_hgt_FLPN(fp_path="data/flightplan.csv")
-    fn.altitude.get_alt(fp_path="data/flightplan.csv")
-    # Send angle limits
-    fn.angles.send_bank_angle()
-    # Call lateral FLPN capture functions
-    fn.axis.join_lat_FLPN(fp_path=fg.FP_PATH)
-    fn.axis.get_axis(fp_path=fg.FP_PATH)
     # Send speed limits
     fn.speeds.speed_limits()
     fn.speeds.managed_speed()
     # Send load factors
     fn.load_factors.loadfactors()
+    # Send angle limits
+    fn.angles.send_bank_angle()
+    # Call vertical FLPN capture functions
+    fn.altitude.join_hgt_FLPN(fp_path=fg.FP_PATH)
+    fn.altitude.get_alt(fp_path=fg.FP_PATH)
+    # Call lateral FLPN capture functions
+    fn.axis.join_lat_FLPN(fp_path=fg.FP_PATH)
+    fn.axis.get_axis(fp_path=fg.FP_PATH)
 
 def on_test(agent, *a):
     print("Test received!")
