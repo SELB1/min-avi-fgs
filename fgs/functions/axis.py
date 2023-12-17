@@ -41,12 +41,14 @@ def get_axis(fp_path="../../data/flightplan.csv"):
     delta_chi = None
     t_wpt = fg.TARGETED_LAT_WPT
     a = None
+    send_axis = False
     if fg.TARGETED_LAT_WPT > 1:
         current_axis = Axis(fp[t_wpt-1], fp[t_wpt])
         last_axis = Axis(fp[t_wpt-2], fp[t_wpt-1])
         delta_chi = current_axis.chi - last_axis.chi
 
-        d = R * tan(delta_chi/2) * 1.5
+        # Si delta_chi=0, d = 0, et le FGS n'envoie pas l'axe suivant, d'ou la borne inf
+        d = max(R * tan(delta_chi/2) * 1.5, fd.MIN_FLYBY_RADIUS)
         if fg.LOG:
             print("[*] " + Fore.LIGHTBLACK_EX + f"d = {d}" + Fore.RESET)
 
@@ -61,14 +63,17 @@ def get_axis(fp_path="../../data/flightplan.csv"):
             if fg.TARGETED_LAT_WPT + 1 < len(fp): # on ne déborde pas le plan de vol
                 # envoyer l'axe suivant
                 fg.TARGETED_LAT_WPT += 1
-        
-        a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
+                a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
+                send_axis = True
     else:
         a = Axis(fp[0], fp[1])
+        fg.TARGETED_LAT_WPT += 1
+        send_axis = True
 
-    IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.cap}")
-    if fg.LOG:
-        print(f"[*]{Fore.LIGHTBLACK_EX} {a}{Fore.RESET}")
+    if send_axis:
+        IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.cap}")
+        if fg.LOG:
+            print(f"[*]{Fore.LIGHTBLACK_EX} {a}{Fore.RESET}")
 
 if __name__ == "__main__":
     p1 = Point(.0, .0)

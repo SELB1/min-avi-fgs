@@ -68,7 +68,7 @@ def get_flightplan(path="./../../data/flightplan.csv"):
     return res
 
 ### CONSTANTS ###
-FLYBY_RADIUS = 1852
+MIN_FLYBY_RADIUS = 185 # minimum de rayon pour entamer le virage (si delta_chi = 0)
 FLYOVER_RADIUS = 185
 MAGNETIC_DEVIATION = 13.59
 FLPN_JOIN_RADIUS = 2*1852 # 2 NM
