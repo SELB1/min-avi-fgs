@@ -36,7 +36,7 @@ def on_test(agent, *a):
     print("Test received!")
 
 def on_DIRTO(agent, *a):
-    to_point = Point(a[0], a[1])
+    to_point = fd.Point(a[0], a[1])
     fn.dirto.get_DIRTO_axis(to_point)
 
 def on_ldg(agent, *a):
