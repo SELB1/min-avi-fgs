@@ -41,7 +41,6 @@ def get_axis(fp_path="../../data/flightplan.csv"):
     delta_chi = None
     t_wpt = fg.TARGETED_LAT_WPT
     a = None
-    send_axis = False
     if fg.TARGETED_LAT_WPT > 1:
         current_axis = Axis(fp[t_wpt-1], fp[t_wpt])
         last_axis = Axis(fp[t_wpt-2], fp[t_wpt-1])
@@ -64,16 +63,12 @@ def get_axis(fp_path="../../data/flightplan.csv"):
                 # envoyer l'axe suivant
                 fg.TARGETED_LAT_WPT += 1
                 a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
-                send_axis = True
     else:
         a = Axis(fp[0], fp[1])
-        fg.TARGETED_LAT_WPT += 1
-        send_axis = True
 
-    if send_axis:
-        IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.cap}")
-        if fg.LOG:
-            print(f"[*]{Fore.LIGHTBLACK_EX} {a}{Fore.RESET}")
+    IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.cap}")
+    if fg.LOG:
+        print(f"[*]{Fore.LIGHTBLACK_EX} {a}{Fore.RESET}")
 
 if __name__ == "__main__":
     p1 = Point(.0, .0)
