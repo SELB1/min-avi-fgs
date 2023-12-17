@@ -15,22 +15,22 @@ def plot_flight(flightplan):
     # Tracé du plan de vol
     for point in flightplan:
         if point.fly_by:
-            plt.plot(point.x, point.y, marker='o', color='red')
+            plt.plot(point.y, point.x, marker='o', color='red')
         elif point.fly_over:
-            plt.plot(point.x, point.y, marker='x', color='blue')
+            plt.plot(point.y, point.x, marker='x', color='blue')
         else:
-            plt.plot(point.x, point.y, marker='o', color='black')
+            plt.plot(point.y, point.x, marker='o', color='black')
 
     # Tracé des axes
     fp = flightplan
     for i in range(0, len(fp)):
         if i+1 < len(fp):
-            plt.plot((fp[i].x, fp[i+1].x), (fp[i].y, fp[i+1].y), marker="", color="red")
+            plt.plot((fp[i].y, fp[i+1].y), (fp[i].x, fp[i+1].x), marker="", color="red")
         else:
-            plt.plot((fp[i].x, fp[0].x), (fp[i].y, fp[0].y), marker="", color="red")
+            plt.plot((fp[i].y, fp[0].y), (fp[i].x, fp[0].x), marker="", color="red")
 
-    plt.xlabel('Position X')
-    plt.ylabel('Position Y')
+    plt.xlabel('Position Y')
+    plt.ylabel('Position X')
     plt.title('Plan de vol avec axe')
     plt.grid(True)
 
@@ -50,7 +50,7 @@ def on_axis(agent, *a):
     chi = chi * pi/180
     print(f"chi={chi}")
     # p0 et p1 sont les deux points qui forment l'axe
-    p0 = Point(a[0], a[1])
+    p0 = Point(a[1], a[0])
     p1 = Point(p0.x + lengh*cos(chi), p0.y + lengh*sin(chi))
     print(f"x={p0.x} y={p0.y} cap={cap}")
     # Affichage
@@ -63,7 +63,7 @@ def run_ivy(p0:Point, fp_path="data/flightplan.csv"):
     # Afficher le plan de vol
     plot_flight(flightplan)
 
-    plt.plot(p0.x, p0.y, 'go', label="Position de l\'avion")
+    plt.plot(p0.y, p0.x, 'go', label="Position de l\'avion")
 
     IvySendMsg(f"StateVector x={p0.x} y={p0.y} z=0 Vp=69 fpa=0 psi=0 phi=0")
     plt.show()
@@ -86,13 +86,14 @@ def run():
     # Cas 2 : Rejointe du plan de vol
     print(f"{Fore.GREEN}Cas 2 :{Fore.RESET} Rejointe du plan de vol")
     input("[enter] pour continuer : ")
-    p0 = Point(-3000, -2000)
+    p0 = Point(-3000, -580)
     run_ivy(p0)
 
     # Cas 3 : Envoi de l'axe suivant en anticipation (fly-by)
     print(f"{Fore.GREEN}Cas 3 :{Fore.RESET} Envoi de l'axe suivant pour en anticipation")
     input("[enter] pour continuer : ")
-    p0 = Point(-3000, -1500)
+    # -2069,10656
+    p0 = Point(-2100, 9800)
     run_ivy(p0)
 
     # Cas 4 : Envoi de l'axe suivant pour un fly-over
