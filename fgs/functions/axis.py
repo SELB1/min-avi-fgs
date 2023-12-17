@@ -63,6 +63,8 @@ def get_axis(fp_path="../../data/flightplan.csv"):
                 # envoyer l'axe suivant
                 fg.TARGETED_LAT_WPT += 1
                 a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
+    elif fg.TARGETED_LAT_WPT == 1 and fp[fg.TARGETED_LAT_WPT] - current_pos <= fd.FLPN_JOIN_RADIUS:
+        fg.TARGETED_LAT_WPT += 1
     else:
         a = Axis(fp[0], fp[1])
 
