@@ -42,7 +42,7 @@ options:
 ^WindComponent VWind=(\S+) dirWind=(\S+)
 ```
 
-* Déclinaison magnétique et angle du vent en degrés.
+* Déclinaison magnétique et angle du vent en radians.
 * Vitesse du vent en m/s.
 
 ### Limites facteurs de charge

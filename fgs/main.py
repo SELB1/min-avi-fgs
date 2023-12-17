@@ -63,10 +63,10 @@ def init_fgs():
     TODO : corriger la trajectoire de l'avion
     """
     sleep(0.1)
-    DirWind = 15*180/pi
+    DirWind = 15*pi/180
     VWind =  10
     route = 14*pi/180
     d = asin(VWind*sin(route - DirWind)/128)
     IvySendMsg(f'InitStateVector x=0 y=0 z=100 Vp=128 fpa=0 psi={route-d} phi=0')
     IvySendMsg(f'MagneticDeclination={fd.MAGNETIC_DEVIATION*pi/180}')
-    IvySendMsg('WindComponent VWind=10 dirWind=15')
+    IvySendMsg(f'WindComponent VWind=10 dirWind={DirWind}')
