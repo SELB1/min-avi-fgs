@@ -12,7 +12,7 @@ pip install -r requirements.txt
 
 ### Intégration dans un autre programme
 
-* Installer le module ``fgs`` (placer le dossier ``fgs`` dans le répertoire contenant le main.py)
+* Installer le module ``fgs`` (placer le dossier ``fgs`` dans le répertoire contenant le programme principal de votre programme)
 * Importer la fonction ``bind_messages`` comme suit : ``from fgs.main import bind_messages`` depuis le main
 * ``bind_messages`` contient tous les appels de ``IvyBindMsg(...)``
 
@@ -31,6 +31,39 @@ options:
   -b IVY_ADDRESS  Ivy bind adress (127.255.255.255:2010 by default)
   -p FP_PATH      Path to the CSV flightplan (data/flightplan.csv by default)
   -v              Enable log messages (disabled by default)
+```
+
+## Lecture du code
+
+## Structure du projet
+
+Ce projet est un package Python, le module se nomme ```fgs``` et se trouve dans le dossier ```fgs/```.
+
+Le fichier ```fgs/main.py``` lie le module fgs à ivy.
+
+Les fonctions se trouvent dans des fichiers python, qui se trouvent dans ```fgs/functions```.
+
+Les tests se trouvent dans le dossier ```fgs/tests```.
+
+Dans ```fgs/defs.py``` et ```fgs/globals.py``` se trouvent respectivement les définitions statiques et les définitions de variables globales.
+
+### Lancer un test
+
+Lancer le ```main.py``` se trouvant à la racine du dépôt.
+
+Dans un autre terminal, lancer ```run_tests.py``` avec la syntaxe suivante :
+
+```
+$ python run_tests.py -h
+usage: FGS test suite [-h] {axis,alt}
+
+Run FGS tests
+
+positional arguments:
+  {axis,alt}  Test to run
+
+options:
+  -h, --help  show this help message and exit
 ```
 
 ## Messages IVY envoyés
