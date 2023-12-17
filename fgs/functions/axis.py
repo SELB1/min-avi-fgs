@@ -40,6 +40,7 @@ def get_axis(fp_path="../../data/flightplan.csv"):
     # Distance au WPT pour entamer le virage
     delta_chi = None
     t_wpt = fg.TARGETED_LAT_WPT
+    current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     a = None
     if fg.TARGETED_LAT_WPT > 1:
         current_axis = Axis(fp[t_wpt-1], fp[t_wpt])
@@ -50,8 +51,6 @@ def get_axis(fp_path="../../data/flightplan.csv"):
         d = max(R * tan(delta_chi/2) * 1.5, fd.MIN_FLYBY_RADIUS)
         if fg.LOG:
             print("[*] " + Fore.LIGHTBLACK_EX + f"d = {d}" + Fore.RESET)
-
-        current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
         
         # distance entre l'avion et le point visé
         distance = current_pos - fp[fg.TARGETED_LAT_WPT]
