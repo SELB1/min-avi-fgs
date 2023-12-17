@@ -23,7 +23,7 @@ def join_lat_FLPN(fp_path="../../data/flightplan.csv"):
     for i in range(fg.TARGETED_LAT_WPT, len(fp)):
         if fp[i] - current_pos <= fd.FLPN_JOIN_RADIUS:
             if fg.LOG:
-                print(f"[*] On lateral FLPN{Fore.LIGHTBLACK_EX} TARGETED_LAT_WPT={fg.TARGETED_LAT_WPT}{Fore.RESET}")
+                print(f"[*] On lateral FLPN{Fore.LIGHTBLACK_EX} TARGETED_LAT_WPT from {fg.TARGETED_LAT_WPT} to {i} {Fore.RESET}")
             fg.TARGETED_LAT_WPT = i
 
 def get_axis(fp_path="../../data/flightplan.csv"):
