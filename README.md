@@ -103,3 +103,5 @@ Unités : degrés et °/s
 ```
 
 x, y en m
+
+x croissant vers le Nord, y croissant vers l'Est

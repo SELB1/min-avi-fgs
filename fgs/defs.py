@@ -39,7 +39,10 @@ class Axis:
     def __init__(self, first:Point, second:Point):
         # x => Nord (vrai)
         # y => Est
-        self.chi = atan2((second.y - first.y), (second.x - first.x)) * 180/pi
+        # Convention x vers l'est y vers le nord
+        # self.chi = atan2((second.y - first.y), (second.x - first.x)) * 180/pi
+        # Convention x vers le nord, y vers l'est
+        self.chi = atan2((second.x - first.x), (second.y - first.y)) * 180/pi
         if -180 <= self.chi <= 90:
             self.cap = 90 - self.chi
         else:
