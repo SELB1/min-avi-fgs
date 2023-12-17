@@ -83,10 +83,11 @@ def run():
     p0 = Point(-3000, -5000)
     run_ivy(p0)
     
-    # Cas 2 : Rejointe du plan de vol
+    # Cas 2 : Rejointe du premier point du plan de vol
     print(f"{Fore.GREEN}Cas 2 :{Fore.RESET} Rejointe du plan de vol")
     input("[enter] pour continuer : ")
-    p0 = Point(-3000, -580)
+    # p0 = Point(-3000, -580)
+    p0 = Point(0,-10600)
     run_ivy(p0)
 
     # Cas 3 : Envoi de l'axe suivant en anticipation (fly-by)

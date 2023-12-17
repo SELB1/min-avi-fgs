@@ -22,9 +22,10 @@ def join_lat_FLPN(fp_path="../../data/flightplan.csv"):
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     for i in range(fg.TARGETED_LAT_WPT, len(fp)):
         if fp[i] - current_pos <= fd.FLPN_JOIN_RADIUS:
+            if fg.TARGETED_LAT_WPT + 2 < len(fp):
+                fg.TARGETED_LAT_WPT = i+1
             if fg.LOG:
-                print(f"[*] On lateral FLPN{Fore.LIGHTBLACK_EX} TARGETED_LAT_WPT from {fg.TARGETED_LAT_WPT} to {i} {Fore.RESET}")
-            fg.TARGETED_LAT_WPT = i
+                print(f"[*] On lateral FLPN{Fore.LIGHTBLACK_EX} TARGETED_LAT_WPT = {fg.TARGETED_LAT_WPT}{Fore.RESET}")
 
 def get_axis(fp_path="../../data/flightplan.csv"):
     """
@@ -42,10 +43,10 @@ def get_axis(fp_path="../../data/flightplan.csv"):
     t_wpt = fg.TARGETED_LAT_WPT
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     a = None
-    if fg.TARGETED_LAT_WPT > 1:
+    if 0 < fg.TARGETED_LAT_WPT < len(fp)-1:
+        next_axis = Axis(fp[t_wpt], fp[t_wpt+1])
         current_axis = Axis(fp[t_wpt-1], fp[t_wpt])
-        last_axis = Axis(fp[t_wpt-2], fp[t_wpt-1])
-        delta_chi = current_axis.chi - last_axis.chi
+        delta_chi = next_axis.chi - current_axis.chi
 
         # Si delta_chi=0, d = 0, et le FGS n'envoie pas l'axe suivant, d'ou la borne inf
         d = max(R * tan(delta_chi/2) * 1.5, fd.MIN_FLYBY_RADIUS)
@@ -58,14 +59,14 @@ def get_axis(fp_path="../../data/flightplan.csv"):
         # si la distance entre l'avion et le point visé est plus petite que la distance de virage et que le point visé est un fly-by
         # ou que la distance entre l'avion et le point visé est plus petite que le rayon de flyover et que le point visé est un fly-over
         if distance <= d and fp[fg.TARGETED_LAT_WPT].fly_by or distance <= fd.FLYOVER_RADIUS and fp[fg.TARGETED_LAT_WPT].fly_over:
-            if fg.TARGETED_LAT_WPT + 1 < len(fp): # on ne déborde pas le plan de vol
-                # envoyer l'axe suivant
-                fg.TARGETED_LAT_WPT += 1
-                a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
-    elif fg.TARGETED_LAT_WPT == 1 and fp[fg.TARGETED_LAT_WPT] - current_pos <= fd.FLPN_JOIN_RADIUS:
-        fg.TARGETED_LAT_WPT += 1
+            if fg.TARGETED_LAT_WPT + 1 < len(fp): # on ne déborde pas du plan de vol, +2 cf ligne 49
+                fg.TARGETED_LAT_WPT += 1 # on sélectionne le point suivant
+        if fg.TARGETED_LAT_WPT < len(fp):
+            a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
+    elif fg.TARGETED_LAT_WPT == len(fp)-1:
+        a = Axis(fp[fg.TARGETED_LAT_WPT-1], fp[fg.TARGETED_LAT_WPT])
     else:
-        a = Axis(fp[0], fp[1])
+        print(f"{Fore.RED}t_wpt={fg.TARGETED_LAT_WPT}{Fore.RESET}")
 
     IvySendMsg(f"Axis x={a.p0.x} y={a.p0.y} chi={a.cap}")
     if fg.LOG:
