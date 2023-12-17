@@ -12,21 +12,21 @@ def plot_flight(flightplan):
     # Tracé du plan de vol
     for point in flightplan:
         if point.z>0:
-            plt.plot(point.x, point.y, marker='o', color='blue')
-            plt.annotate(f"{point.z}m", (point.x, point.y))
+            plt.plot(point.y, point.x, marker='o', color='blue')
+            plt.annotate(f"{point.z}m", (point.y, point.x))
         else:
-            plt.plot(point.x, point.y, marker='x', color='black')
+            plt.plot(point.y, point.x, marker='x', color='black')
 
     # Tracé des axes
     fp = flightplan
     for i in range(0, len(fp)):
         if i+1 < len(fp):
-            plt.plot((fp[i].x, fp[i+1].x), (fp[i].y, fp[i+1].y), marker="", color="red")
+            plt.plot((fp[i].y, fp[i+1].y), (fp[i].x, fp[i+1].x), marker="", color="red")
         else:
-            plt.plot((fp[i].x, fp[0].x), (fp[i].y, fp[0].y), marker="", color="red")
+            plt.plot((fp[i].y, fp[0].y), (fp[i].x, fp[0].x), marker="", color="red")
 
-    plt.xlabel('Position X')
-    plt.ylabel('Position Y')
+    plt.xlabel('Position Y')
+    plt.ylabel('Position X')
     plt.title('Plan de vol avec axe')
     plt.grid(True)
 
@@ -36,7 +36,7 @@ def run_ivy(p0:Point, fp_path="data/flightplan.csv"):
     # Afficher le plan de vol
     plot_flight(flightplan)
 
-    plt.plot(p0.x, p0.y, 'go', label="Position de l\'avion")
+    plt.plot(p0.y, p0.x, 'go', label="Position de l\'avion")
 
     IvySendMsg(f"StateVector x={p0.x} y={p0.y} z=0 Vp=69 fpa=0 psi=0 phi=0")
     plt.show()
