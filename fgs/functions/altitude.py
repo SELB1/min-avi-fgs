@@ -8,7 +8,7 @@ from ivy.std_api import *
 
 def join_hgt_FLPN(fp_path="../../data/flightplan.csv"):
     """
-    Rejoint le plan de vol vertical si l'avion est à au plus FLPN_JOIN_RADIUS d'un point et que l'avion est à -+3000ft de l'altitude du point
+    Rejoint le plan de vol vertical si l'avion est à au plus FLPN_JOIN_RADIUS d'un point
     """
     fp = get_flightplan(fp_path)
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
@@ -27,10 +27,12 @@ def get_alt(fp_path="../../data/flightplan.csv"):
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     # Si l'avion est dans le rayon de rejointe du point visé
     if fp[t_wpt] - current_pos <= fd.FLPN_JOIN_RADIUS:
-        # Si l'altitude est négative
+        # On sélectionne le point suivant
+        t_wpt += 1
+        # Si l'altitude de ce point est négative
         while fp[t_wpt].z < 0:
             if t_wpt < len(fp)-1:
-                t_wpt += 1 #on passe au point suivant
+                t_wpt += 1 # on passe au point suivant
         if fg.LOG:
             print(f"[*]{Fore.LIGHTBLACK_EX} ManagedAlt alt={fp[t_wpt].z*fd.M_TO_FT}")
         fg.TARGETED_HGT_WPT = t_wpt
