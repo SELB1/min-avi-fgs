@@ -27,10 +27,11 @@ def get_alt(fp_path="../../data/flightplan.csv"):
     current_pos = Point(fg.STATE_VECTOR.x, fg.STATE_VECTOR.y)
     # Si l'avion est dans le rayon de rejointe du point visé
     if fp[t_wpt] - current_pos <= fd.FLPN_JOIN_RADIUS:
-        # On sélectionne le point suivant
-        t_wpt += 1
+        if t_wpt < len(fp) - 1:
+            # On sélectionne le point suivant
+            t_wpt += 1
         # Si l'altitude de ce point est négative
-        while fp[t_wpt].z < 0:
+        while fp[t_wpt].z < 0 and t_wpt < len(fp) - 1:
             if t_wpt < len(fp)-1:
                 t_wpt += 1 # on passe au point suivant
         if fg.LOG:

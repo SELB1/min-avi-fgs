@@ -68,4 +68,10 @@ def run():
     p0 = Point(-2000, 10000)
     run_ivy(p0)
 
+    # Cas 4 : Dernier point
+    print(f"{Fore.GREEN}Cas 4 :{Fore.RESET} Dernier point")
+    input("[enter] pour continuer : ")
+    p0 = Point(1200, 2500)
+    run_ivy(p0)
+
     IvyStop()
